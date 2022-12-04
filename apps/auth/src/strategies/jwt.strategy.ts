@@ -5,6 +5,7 @@ import { UsersService } from '../users/users.service';
 // import { User } from '../users/models/user';
 import { ConfigService } from '@nestjs/config';
 import { TokenPayload } from '../auth.service';
+// import { User } from '../users/schemas/user.schema';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
@@ -14,7 +15,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: any) => {
-          console.log(request?.Authentication);
           return request?.Authentication;
         },
       ]),
@@ -24,11 +24,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate({ userId }: TokenPayload) {
     try {
-      const result = await this.usersService.getUser({ userId });
-      return result;
+      const user = await this.usersService.getUser({ userId });
+      return user;
     } catch (err) {
-      console.log('auth error');
-      console.log(err);
       throw new UnauthorizedException();
     }
   }

@@ -16,7 +16,6 @@ export class AuthService {
   ) {}
 
   async login(user: User, response: Response) {
-    console.log(user.userId);
     const tokenPayload: TokenPayload = {
       userId: user.userId,
     };

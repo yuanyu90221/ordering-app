@@ -22,7 +22,6 @@ export class JwtAuthGuard implements CanActivate {
       })
       .pipe(
         tap((res) => {
-          console.log(res);
           this.addUser(res, context);
         }),
         catchError(() => {
@@ -31,15 +30,12 @@ export class JwtAuthGuard implements CanActivate {
       );
   }
   private getAuthentication(context: ExecutionContext) {
-    console.log('getAuthentication');
     let authentication: string;
     if (context.getType() === 'rpc') {
       authentication = context.switchToRpc().getData().Authentication;
     } else if (context.getType() === 'http') {
-      console.log('http');
       authentication = context.switchToHttp().getRequest()
         .cookies?.Authentication;
-      console.log(authentication);
     }
     if (!authentication) {
       throw new UnauthorizedException(
@@ -49,7 +45,6 @@ export class JwtAuthGuard implements CanActivate {
     return authentication;
   }
   private addUser(user: any, context: ExecutionContext) {
-    console.log(user);
     if (context.getType() === 'rpc') {
       context.switchToRpc().getData().user = user;
     } else if (context.getType() === 'http') {

@@ -1,4 +1,11 @@
-import { Controller, Post, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  ExecutionContext,
+  Post,
+  Res,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
@@ -21,8 +28,7 @@ export class AuthController {
   }
   @UseGuards(JwtAuthGuard)
   @MessagePattern('validate_user')
-  async validateUser(@CurrentUser() user: User) {
-    console.log('validateUser', user);
+  async validateUser(user: User) {
     return user;
   }
 }
